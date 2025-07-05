@@ -1,0 +1,2 @@
+# Investment-Dashboard
+Developing a React and Django based investment dashboard featuring real-time performance graphs, strategy metrics (PnL, ratios, confidence), asset allocation, and control buttons. This investment dashboard helps you track your portfolio, some important metrics like average monthly returns, average drawdown and others, and you can manipulate test data and download a full report.
