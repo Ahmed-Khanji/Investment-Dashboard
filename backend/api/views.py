@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 import ccxt
+from decouple import config
 
-QUOTE_CURRENCY = 'USD'
-api_key = 'yqPWrtVuElaIExKmIp/E/upTOz/to1x7tC3JoFUxoSTKWCOorT6ifF/B'
-api_secret = 'L8h5vYoAu/jpQiBROA9yKN41FGwZAGGVF3nfrC5f5EiaoF7VksruPVdD7x1VOwnyyNCMdrGnT8lP4xHTiBrYMQ=='
+QUOTE_CURRENCY = config('QUOTE_CURRENCY')
+api_key = config('KRAKEN_API_KEY')
+api_secret = config('KRAKEN_API_SECRET')
 exchange = ccxt.kraken({
     'apiKey': api_key,
     'secret': api_secret,
