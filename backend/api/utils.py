@@ -15,7 +15,6 @@ exchange = ccxt.kraken({
     }
 })
 
-
 # function to add balance to db
 def add_balance():
     try:
