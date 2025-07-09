@@ -1,7 +1,11 @@
-from django.shortcuts import render
 from django.http import JsonResponse
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 import ccxt
+from datetime import date
 from decouple import config
+from .models import Investment
+from .serializer import InvestmentSerializer
 
 QUOTE_CURRENCY = config('QUOTE_CURRENCY')
 api_key = config('KRAKEN_API_KEY')
@@ -14,8 +18,15 @@ exchange = ccxt.kraken({
     }
 })
 
-# return current overall money (owned assets + fiat) at this moment in the porfolio (excluding locked assets)
-def get_balance(request):
+# get array/db of balances with their respective time
+@api_view(['GET'])
+def get_all_balances(request):
+    stats = Investment.objects.all()
+    serializedData = InvestmentSerializer(stats, many=True)
+    return Response(serializedData.data)
+
+# function to add balance to db
+def add_balance():
     try:
         balances = exchange.fetch_balance() # Fetch current account balances (both free and used)
         tickers = exchange.fetch_tickers() # Fetch the latest market prices for all tickers
@@ -32,23 +43,10 @@ def get_balance(request):
                     if pair in exchange.markets:
                         price = tickers[pair]['last']
                         portfolio_value += balance * price
-        
-        return JsonResponse({'balance': round(portfolio_value, 2)})
+        # Avoid duplicate entries for the same day
+        if Investment.objects.filter(date=date.today()).exists():
+            return
+        Investment.objects.create(balance=portfolio_value)
     except ccxt.BaseError as e:
         print(f"An error occurred: {str(e)}")
         return None
-
-# return current fiat (available usd in portfolio)
-def get_usd_left(request):
-    available = exchange.fetch_balance()['free'].get(QUOTE_CURRENCY, 0)
-    return JsonResponse({'available': round(available, 2)})
-
-# return assets owned ([{symbol: amount}, ...])
-def get_assets(request):
-    balances = exchange.fetch_balance()
-    assets = [
-        {'symbol': symbol, 'amount': amount}
-        for symbol, amount in balances['total'].items()
-        if amount > 0
-    ]
-    return JsonResponse(assets, safe=False)

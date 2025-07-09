@@ -9,8 +9,8 @@ export default function StrategyChart() {
         {time: '08/22/2016', balance: 150},
     ]
     // State for array and single stat
-    const [chartData, setChartData] = useState(mockData);
-    // const [stat, setStat] = useState('');
+    const [statArray, setStatArray] = useState(mockData);
+    const [chartData, setChartData] = useState([]);
 
     // fetching daily balance
     function fetchBalance() {
@@ -22,7 +22,7 @@ export default function StrategyChart() {
                     time: new Date().toLocaleDateString(),
                     balance: data.balance
                 };
-                setChartData([...chartData, newBalance]);
+                setStatArray([...statArray, newBalance]);
             })
             .catch(err => console.error(err.message));
     }
@@ -40,11 +40,41 @@ export default function StrategyChart() {
         return () => clearTimeout(timeout); // cleanup when unmount
     }, []);
 
+    // Parsing data to 'Jun 24, 1000'
+    function parseChartData() {
+        const grouped = {};
+        statArray.forEach(stat => {
+            const monthYear = new Intl.DateTimeFormat('en', {
+                month: 'short',
+                year: '2-digit'
+            }).format(new Date(stat.time));
+
+            if (!grouped[monthYear]) {
+                grouped[monthYear] = [];
+            }
+            grouped[monthYear].push(stat.balance);
+        });
+
+        const parsed = Object.entries(grouped).map(([month, balances]) => {
+            const sum = balances.reduce((a, b) => a + b, 0);
+            const avg = sum / balances.length;
+            return {
+                time: month,
+                balance: Math.round(avg*100) / 100 // rounding to 2 decimal
+            }
+        });
+        setChartData(parsed)
+    }
+    useEffect(() => {
+        parseChartData();
+    }, [statArray]);
+    
+
     return (
         <>
             <ul>
                 {chartData.map(stat => (
-                    <p>{stat.time}: {stat.balance}</p>
+                    <p>{stat.time}: {stat.balance}$</p>
                 ))}
             </ul>
         </>
