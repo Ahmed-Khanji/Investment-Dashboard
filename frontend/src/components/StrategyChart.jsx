@@ -4,79 +4,96 @@ import '../styles/StrategyChart.css';
 
 export default function StrategyChart() {
     const mockData = [
-        {time: '06/29/2015', balance: 100}, // time in MM/DD/YYYY, balance in usd $
-        {time: '07/12/2016', balance: 50},
-        {time: '08/22/2016', balance: 150},
+        {date: '06/29/2015', balance: 100}, // time in MM/DD/YYYY, balance in usd $
+        {date: '07/12/2016', balance: -50},
+        {date: '08/22/2016', balance: 150},
     ]
     // State for array and single stat
     const [statArray, setStatArray] = useState(mockData);
     const [chartData, setChartData] = useState([]);
 
-    // fetching daily balance
-    function fetchBalance() {
-        fetch('http://127.0.0.1:8000/api/balance/')
-            .then(res => res.json())
-            .then(data => {
-                console.log("Parsed JSON", data); // testing
-                const newBalance = {
-                    time: new Date().toLocaleDateString(),
-                    balance: data.balance
-                };
-                setStatArray([...statArray, newBalance]);
-            })
-            .catch(err => console.error(err.message));
+    // Fetches from backend and updates statArray
+    async function fetchBalance() {
+        try {
+            const res = await fetch('http://127.0.0.1:8000/api/all-balances/');
+            const data = await res.json();
+            setStatArray(prev => [...prev, ...data]);
+            return [...statArray, ...data]; // return updated array for parsing
+        } catch (err) {
+            console.error(err.message);
+            return statArray; // fallback
+        }
     }
-    useEffect(() => {
-        fetchBalance();
-        const now = new Date();
-        const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
-        const delay = nextMidnight - now;
 
-        const timeout = setTimeout(() => {
-            fetchBalance();
-            setInterval(fetchBalance, 24*60*60*1000) // 24 hours
-        }, delay);
-
-        return () => clearTimeout(timeout); // cleanup when unmount
-    }, []);
-
-    // Parsing data to 'Jun 24, 1000'
-    function parseChartData() {
+    // Parses given array into chart-ready format
+    function parseChartData(array) {
         const grouped = {};
-        statArray.forEach(stat => {
-            const monthYear = new Intl.DateTimeFormat('en', {
-                month: 'short',
-                year: '2-digit'
-            }).format(new Date(stat.time));
+        array.forEach(stat => {
+            const dateObj = new Date(stat.date);
+            const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(dateObj);
+            const year = `'${dateObj.getFullYear().toString().slice(-2)}`;
+            const monthYear = `${month} ${year}`;
 
-            if (!grouped[monthYear]) {
-                grouped[monthYear] = [];
-            }
-            grouped[monthYear].push(stat.balance);
+            if (!grouped[monthYear]) grouped[monthYear] = [];
+            grouped[monthYear].push(parseFloat(stat.balance)); // ensure balance is number
         });
 
         const parsed = Object.entries(grouped).map(([month, balances]) => {
             const sum = balances.reduce((a, b) => a + b, 0);
             const avg = sum / balances.length;
             return {
-                time: month,
-                balance: Math.round(avg*100) / 100 // rounding to 2 decimal
-            }
+                date: month,
+                balance: Math.round(avg * 100) / 100
+            };
         });
-        setChartData(parsed)
+        setChartData(parsed);
     }
-    useEffect(() => {
-        parseChartData();
-    }, [statArray]);
     
+    useEffect(() => {
+        (async () => {
+            const fullArray = await fetchBalance(); // wait for updated array
+            parseChartData(fullArray);
+        })(); // declaring and calling the function at the same time
+    }, []);
 
     return (
         <>
-            <ul>
-                {chartData.map(stat => (
-                    <p>{stat.time}: {stat.balance}$</p>
-                ))}
-            </ul>
+            <div className="column">
+                <h2>Strategy Chart</h2>
+                <div className="chart" style={{ width: '100%', height: 300 }}>
+                     <ResponsiveContainer>
+                        <LineChart data={chartData}>
+                            <Line 
+                                type="monotone" dataKey="balance" 
+                                stroke={chartData[chartData.length - 1]?.balance >= 0 ? 'green' : 'red'} 
+                            />
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="date" />
+                            <YAxis domain={['auto', 'auto']} />
+                            <Tooltip
+                                formatter={(value) => {
+                                   const color = value > 0 ? 'green' : 'red';
+                                   return <span style={{color}}>{`$${value}`}</span>
+                                }}
+                                labelFormatter={(label) => {
+                                    // label is something like "Jun '16"
+                                    const [monthStr, yearStr] = label.split(" '");
+                                    const fullDate = new Date(`${monthStr} 1, 20${yearStr}`); // e.g., "Jun 1, 2016"
+                                    const fullMonth = new Intl.DateTimeFormat('en', { month: 'long' }).format(fullDate);
+                                    const year = fullDate.getFullYear();
+                                    return `${fullMonth} ${year}`; // e.g., "June 2016"
+                                }}
+                            />
+                        </LineChart>
+                     </ResponsiveContainer>
+                </div>
+                <ul>
+                    {chartData.map((stat, index) => (
+                        <p key={index}>{stat.date}: {stat.balance}</p>
+                    ))}
+                </ul>
+            </div>
         </>
     )
 }
+
