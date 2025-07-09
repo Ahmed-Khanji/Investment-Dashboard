@@ -1,6 +1,6 @@
 from django.db import models
 
-class Investment(models.model):
+class Investment(models.Model):
     date = models.DateField(auto_now_add=True)
     balance = models.FloatField()
 
