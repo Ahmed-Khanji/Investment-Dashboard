@@ -31,6 +31,11 @@ check_and_add()
 schedule.every(12).hours.do(check_and_add)
 
 log("Investment scheduler is running...")
-while True:
-    schedule.run_pending()
-    time.sleep(3600)  # 3600 seconds = 1 hour
+try:
+    while True:
+        schedule.run_pending()
+        time.sleep(3600)  # Check every hour
+except Exception as e:
+    log(f"Scheduler crashed with error: {e}")
+finally:
+    log("Investment scheduler stopped.")
