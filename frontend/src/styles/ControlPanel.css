@@ -3,7 +3,7 @@
 }
 .panel {
   padding: 20px;
-  width: 90vw;
+  width: 85vw;
   max-width: 1200px;
   border: 2px solid rgb(78, 76, 76);
   border-radius: 10px;
@@ -20,4 +20,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  padding: 10px;
 }

@@ -76,23 +76,31 @@ export default function ControlPanel() {
                 <h2>Portfolio Summary</h2>
                 <div className="panel">
                     <div className='grid'>
-                        <div>
+                        <div className='top-left'>
                             {mthlyReturns.map((stat, index) => (
                                 <p key={index}>
                                     {stat.date}: {stat.return}%
                                 </p>
                             ))}
+                        </div>       
+                        <div></div>
+                        <div className='top-right'>
+                            <p>Top Right</p>
                         </div>
-                        <div><p>metric</p></div>
-                        <div><p>metric</p></div>
-                        
-                        <div><p>metric</p></div>
-                        <div><p>metric</p></div>
-                        <div><p>metric</p></div>
 
-                        <div><p>metric</p></div>
-                        <div><p>metric</p></div>
-                        <div><p>metric</p></div>
+                        <div></div>
+                        <div className='center-metric'>
+                            <p>Center Metric</p>
+                        </div>
+                        <div></div>
+
+                        <div className='bottom-left'>
+                            <p>Bottom Left</p>
+                        </div>
+                        <div></div>
+                        <div className='bottom-right'>
+                            <p>Bottom Right</p>
+                        </div>
                     </div>
                 </div>
             </div>
