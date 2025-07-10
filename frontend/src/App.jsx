@@ -1,12 +1,12 @@
 import StrategyChart from './components/StrategyChart';
-import ControlPanel from './components/ControlPanel';
+import ControlPanel from './components/ControlPanel/ControlPanel';
 
 export default function App() {
 
   return (
     <>
       {/* <StrategyChart /> */}
-      <div className='column'>
+      <div className='page'>
         <ControlPanel />
       </div>
     </>

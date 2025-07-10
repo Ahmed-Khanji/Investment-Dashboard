@@ -8,7 +8,7 @@ export default function StrategyChart() {
         {date: '07/12/2016', balance: -50},
         {date: '08/22/2016', balance: 150},
     ]
-    // State for array and single stat
+    // State for raw stat and chart ready arrays
     const [statArray, setStatArray] = useState(mockData);
     const [chartData, setChartData] = useState([]);
 
@@ -19,7 +19,8 @@ export default function StrategyChart() {
             const data = await res.json();
             setStatArray(prev => [...prev, ...data]);
             return [...statArray, ...data]; // return updated array for parsing
-        } catch (err) {
+        } 
+        catch (err) {
             console.error(err.message);
             return statArray; // fallback
         }

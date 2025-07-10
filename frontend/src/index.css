@@ -11,28 +11,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* For now testing every component in the middle for visualizing*/
 body {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   gap: 1rem;
-}
-
-/*Anything in a row*/
-.row {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-}
-
-/*Anything in a column*/
-.column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
 }
 
 /* Change theme to light*/
