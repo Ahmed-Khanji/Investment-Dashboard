@@ -13,10 +13,10 @@
 
 body {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  min-height: 100vh;
-  gap: 1rem;
+  padding: 0;
+  margin: 0;
 }
 
 /* Change theme to light*/

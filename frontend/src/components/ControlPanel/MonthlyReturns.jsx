@@ -1,4 +1,8 @@
 import { useState, useEffect } from 'react';
+import {
+  LineChart, Line, XAxis, YAxis, Tooltip,
+  CartesianGrid, ResponsiveContainer, Area, AreaChart
+} from 'recharts';
 
 export default function MonthlyReturns({ statArray, firstOfMonthBalances}) {
     const [mthlyReturns, setMthlyReturns] = useState([]);
@@ -19,16 +23,43 @@ export default function MonthlyReturns({ statArray, firstOfMonthBalances}) {
     }
     useEffect(() => {
         computeMthlyReturns();
-    }, [statArray]);
+    }, [firstOfMonthBalances]);
     
+    // Monthly return Array: [{date: mm 'y, return: xx.xx%}]
+
     return (
-        <>
-            <div>
-                <h4>Monthly Returns</h4>
-                {mthlyReturns.map((stat, index) => (
-                    <p key={index}>{stat.date}: {stat.return}%</p>
-                ))}
-            </div>
-        </>
-    )
+    <div className="chart-container">
+      <h2 className="chart-title">Monthly Cumulative Returns</h2>
+      <div className="mthly-chart">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={mthlyReturns}>
+            <defs>
+              <linearGradient id="colorReturn" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#00ff7f" stopOpacity={0.8} />
+                <stop offset="100%" stopColor="#00ff7f" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#444" />
+            <XAxis dataKey="date" stroke="#ccc" />
+            <YAxis
+              domain={['auto', 'auto']}
+              stroke="#ccc"
+              tickFormatter={(val) => `${val}%`}
+            />
+            <Tooltip
+              formatter={(value) => `${value.toFixed(2)}%`}
+              labelStyle={{ color: '#fff' }}
+              contentStyle={{ backgroundColor: '#222', borderColor: '#444' }}
+            />
+            <Area
+              type="linear"
+              dataKey="return"
+              stroke="#00ff7f"
+              fill="url(#colorReturn)"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
 }

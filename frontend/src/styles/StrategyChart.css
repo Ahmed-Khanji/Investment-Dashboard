@@ -3,11 +3,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
+}
+.column h2 {
+  margin-bottom: 0rem;
 }
 
 /* Chart */
 .chart {
+  width: 100%;
+  height: 300px; /* or whatever size you want */
   background-color: rgba(40, 40, 40, 0.85);
   border: 1px solid #555;
   border-radius: 15px;
@@ -27,7 +32,4 @@
 }
 .recharts-tooltip-item {
   color: white !important; /* Ensures name, colon, and value default to white */
-}
-.column h2 {
-  margin-bottom: 0rem; /* or even 0 if you want it really close */
 }

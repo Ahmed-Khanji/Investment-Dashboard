@@ -46,14 +46,8 @@ export default function ControlPanel() {
         setFirstOfMonthBalances(firsts);
     }, [statArray]);
 
-    const testArray = firstOfMonthBalances;
-
     return (
         <>
-            <div className='test'>
-                {testArray.map(item => `${item.date}: ${item.balance}`).join(' | ')}
-            </div>
-
             <div className="container">
                 <h2>Portfolio Summary</h2>
                 <div className="panel">
@@ -64,7 +58,6 @@ export default function ControlPanel() {
                                 firstOfMonthBalances={firstOfMonthBalances}
                             />
                         </div>     
-                        <div></div>
                         <div className='top-right'>
                             <p>Top Right</p>
                         </div>

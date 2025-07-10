@@ -7,6 +7,7 @@ export default function App() {
     <>
       {/* <StrategyChart /> */}
       <div className='page'>
+        <StrategyChart />
         <ControlPanel />
       </div>
     </>

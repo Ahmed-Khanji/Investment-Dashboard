@@ -5,7 +5,7 @@ import '../styles/StrategyChart.css';
 export default function StrategyChart() {
     const mockData = [
         {date: '06/29/2015', balance: 100}, // time in MM/DD/YYYY, balance in usd $
-        {date: '07/12/2016', balance: -50},
+        {date: '07/12/2016', balance: 50},
         {date: '08/22/2016', balance: 150},
     ]
     // State for raw stat and chart ready arrays
@@ -61,7 +61,7 @@ export default function StrategyChart() {
         <>
             <div className="column">
                 <h2>Strategy Chart</h2>
-                <div className="chart" style={{ width: '100%', height: 300 }}>
+                <div className="chart">
                      <ResponsiveContainer>
                         <LineChart data={chartData}>
                             <Line 
@@ -70,7 +70,7 @@ export default function StrategyChart() {
                             />
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="date" />
-                            <YAxis domain={['auto', 'auto']} />
+                            <YAxis domain={['auto', 'auto']} tickFormatter={(tick) => `$${tick}`} />
                             <Tooltip
                                 formatter={(value) => {
                                    const color = value > 0 ? 'green' : 'red';
@@ -88,11 +88,6 @@ export default function StrategyChart() {
                         </LineChart>
                      </ResponsiveContainer>
                 </div>
-                <ul>
-                    {chartData.map((stat, index) => (
-                        <p key={index}>{stat.date}: {stat.balance}</p>
-                    ))}
-                </ul>
             </div>
         </>
     )
