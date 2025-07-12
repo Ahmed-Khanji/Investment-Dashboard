@@ -24,12 +24,11 @@ export default function MonthlyReturns({ statArray, firstOfMonthBalances}) {
     useEffect(() => {
         computeMthlyReturns();
     }, [firstOfMonthBalances]);
-    
     // Monthly return Array: [{date: mm 'y, return: xx.xx%}]
 
     return (
     <div className="chart-container">
-      <h2 className="chart-title">Monthly Cumulative Returns</h2>
+      <h2>Monthly Cumulative Returns</h2>
       <div className="mthly-chart">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={mthlyReturns}>

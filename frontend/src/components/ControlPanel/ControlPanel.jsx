@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
 import '../../styles/ControlPanel.css';
 import MonthlyReturns from './MonthlyReturns';
-import Ratios from './Ratios';
+import SharpRatio from './SharpRatio';
+import SortinoRatio from './SortinoRatio';
 import DrawDown from './DrawDown';
 
 export default function ControlPanel() {
     // fetch statArray
     const mockData = [
-        {date: '06/29/2015', balance: 100}, // time in MM/DD/YYYY, balance in usd $
-        {date: '07/12/2016', balance: 50},
-        {date: '08/22/2016', balance: 150},
+        {date: '2015-06-29', balance: 100}, // time in YYYY-MM-DD, balance in usd $
+        {date: '2016-07-12', balance: 50},
+        {date: '2016-08-22', balance: 150},
     ]
     const [statArray, setStatArray] = useState(mockData);
     useEffect(() => {
@@ -59,21 +60,26 @@ export default function ControlPanel() {
                             />
                         </div>     
                         <div className='top-right'>
-                            <p>Top Right</p>
+                            <p><b>Draw Down Metrics</b></p>
+                            <p>Average DrawDown</p>
+                            <p>Average DrawDown Duration</p>
                         </div>
 
                         <div></div>
                         <div className='center-metric'>
-                            <p>Center Metric</p>
+                            <p>Center Metric (Pie Chart)</p>
                         </div>
                         <div></div>
+                    </div>
 
+                    <div className='bottom-grid'>
                         <div className='bottom-left'>
-                            <p>Bottom Left</p>
+                            <SharpRatio
+                                statArray={statArray}
+                            />
                         </div>
-                        <div></div>
                         <div className='bottom-right'>
-                            <p>Bottom Right</p>
+                            <p>Sortino Ratio</p>
                         </div>
                     </div>
                 </div>

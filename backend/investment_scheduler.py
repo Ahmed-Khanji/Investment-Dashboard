@@ -3,6 +3,7 @@ import os
 import django
 import time
 from datetime import date, datetime
+from django.utils.timezone import localdate
 import schedule
 
 # Set the Django settings module
@@ -20,11 +21,11 @@ from api.models import Investment
 
 # Function to check and add balance
 def check_and_add():
-    if not Investment.objects.filter(date=date.today()).exists():
-        log(f"Adding balance for {date.today()}")
+    if not Investment.objects.filter(date=localdate()).exists():
+        log(f"Adding balance for {localdate()}")
         add_balance()
     else:
-        log(f"Balance already exists for {date.today()}")
+        log(f"Balance already exists for {localdate()}")
 
 # Initial run + schedule every 12 hours
 check_and_add()
