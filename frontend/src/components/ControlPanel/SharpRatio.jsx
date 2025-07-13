@@ -51,14 +51,18 @@ export default function SharpRatio({statArray}) {
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={sharpRatio}>
                             <CartesianGrid strokeDasharray="3 3" />
-                            <Line type="monotone" dataKey="sharp" stroke={strokeColor} />
+                            <Line 
+                                type="monotone" 
+                                dataKey="sharp" 
+                                stroke={strokeColor} 
+                                dot={{ r: 3, stroke: strokeColor, fill: '#F5F5F5', opacity: 0.4 }}
+                            />
                             <XAxis dataKey='date' />
                             <YAxis domain={['auto', 'auto']} />
                         </LineChart>
                     </ResponsiveContainer>
                 </div> 
             </div>
-             
         </>
     )
 }
