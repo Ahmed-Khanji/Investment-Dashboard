@@ -3,7 +3,6 @@
 *.py[cod]
 *.so
 .env
-scheduler_log.txt
 
 # Virtual environment
 venv/
