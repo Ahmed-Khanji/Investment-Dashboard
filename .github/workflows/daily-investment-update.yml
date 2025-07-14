@@ -39,6 +39,9 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
+
+          git pull --rebase
+
           git add backend/scheduler_log.txt
           git commit -m "Update scheduler_log.txt [auto]" || echo "No changes to commit"
           git push
