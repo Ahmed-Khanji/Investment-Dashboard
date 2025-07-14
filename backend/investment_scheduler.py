@@ -14,7 +14,7 @@ from api.models import Investment
 
 # Logging function (to log to a file)
 def log(message):
-    with open("scheduler_log.txt", "a") as f:
+    with open("backend/scheduler_log.txt", "a") as f:
         f.write(f"[{localdate()}] {message}\n")
 
 # Function to check and add balance
