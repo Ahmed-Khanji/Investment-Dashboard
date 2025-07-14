@@ -2,6 +2,7 @@
 import os
 import django
 import time
+from datetime import date, datetime
 from django.utils.timezone import localdate
 
 # Set the Django settings module
@@ -15,7 +16,7 @@ from api.models import Investment
 # Logging function (to log to a file)
 def log(message):
     with open("backend/scheduler_log.txt", "a") as f:
-        f.write(f"[{localdate()}] {message}\n")
+        f.write(f"[{datetime.now()}] {message}\n")
 
 # Function to check and add balance
 def check_and_add():
