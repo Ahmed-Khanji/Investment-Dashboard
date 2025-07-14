@@ -45,7 +45,9 @@ jobs:
           # Set token-based origin (so git pull/push works in GitHub Actions)
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
 
+          git stash --include-untracked
           git pull --rebase
+          git stash pop || true
 
           git add backend/scheduler_log.txt
           git commit -m "Update scheduler_log.txt [auto]" || echo "No changes to commit"
