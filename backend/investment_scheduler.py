@@ -23,7 +23,7 @@ def write_balance_to_csv(portfolio_value, filename='backend/daily_balances.csv')
     today = datetime.today().strftime('%Y-%m-%d')
     with open(filename, mode='a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([today, portfolio_value])
+        writer.writerow([today, portfolio_value]) # ex: 2025-7-19, 1233.55
 
 # Main execution
 def check_and_add():
@@ -31,10 +31,10 @@ def check_and_add():
         log(f"Adding balance for {localdate()}")
         portfolio_value = add_balance()
         if portfolio_value is not None:
-            write_balance_to_csv(portfolio_value)
+            write_balance_to_csv(round(portfolio_value, 2))
         else:
             log("Error or no data: Portfolio value was None")
     else:
-        log(f"Balance already exists for {localdate()}")
+      log(f"Balance already exists for {localdate()}")
 
 check_and_add()

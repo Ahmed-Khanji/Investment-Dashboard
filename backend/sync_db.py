@@ -3,11 +3,12 @@ import django
 import csv
 from datetime import datetime
 from django.utils.timezone import make_aware
-from api.models import Investment
 
 # Django setup
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 django.setup()
+
+from api.models import Investment
 
 def sync_db(csv_file='backend/daily_balances.csv'):
     with open(csv_file, mode='r') as file:
@@ -22,6 +23,7 @@ def sync_db(csv_file='backend/daily_balances.csv'):
 
                 # Add only if not exists
                 if not Investment.objects.filter(date=date_obj).exists():
+                    print("Adding")
                     Investment.objects.create(date=date_obj, balance=value)
             except Exception as e:
                 print(f"Failed to parse row {row}: {e}")
