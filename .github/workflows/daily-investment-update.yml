@@ -28,6 +28,7 @@ jobs:
 
       - name: Run Balance Collector
         env:
+          PYTHONPATH: ${{ github.workspace }}
           DJANGO_SETTINGS_MODULE: backend.settings
           QUOTE_CURRENCY: USD
           KRAKEN_API_KEY: ${{ secrets.KRAKEN_API_KEY }}
