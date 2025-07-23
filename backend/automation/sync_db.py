@@ -1,6 +1,8 @@
 # Reads CSV and inserts new entries into Investment model
 
+import sys
 import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import django
 import csv
 from datetime import datetime
