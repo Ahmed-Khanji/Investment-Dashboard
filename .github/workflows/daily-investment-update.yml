@@ -1,15 +1,15 @@
-name: Daily Investment Scheduler
+name: Daily Investment Update
 
 on:
   schedule:
     - cron: '0 12 * * *'  # Runs daily at 12:00 UTC
-  workflow_dispatch:      # Allow manual trigger from GitHub
+  workflow_dispatch:      # Optional: manual run button
 
 permissions:
-  contents: write  # Allows GitHub Actions to push commits
+  contents: write  # Needed to push to repo
 
 jobs:
-  run-script:
+  update-balance:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,29 +26,28 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r backend/requirements.txt
 
-      - name: Run Django script
+      - name: Run Balance Collector
         env:
           DJANGO_SETTINGS_MODULE: backend.settings
           QUOTE_CURRENCY: USD
           KRAKEN_API_KEY: ${{ secrets.KRAKEN_API_KEY }}
           KRAKEN_API_SECRET: ${{ secrets.KRAKEN_API_SECRET }}
         run: |
-          python backend/investment_scheduler.py
+          python backend/automation/add_balances.py
 
-      - name: Commit and push updated scheduler log
+      - name: Commit and push updated data
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
 
-          # Set token-based origin (so git pull/push works in GitHub Actions)
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
 
           git stash --include-untracked
           git pull --rebase
           git stash pop || true
 
-          git add backend/scheduler_log.txt
-          git commit -m "Update scheduler_log.txt [auto]" || echo "No changes to commit"
+          git add backend/automation/daily_balances.csv backend/automation/scheduler_log.txt
+          git commit -m "Auto update: daily balances [${{ github.run_id }}]" || echo "No changes to commit"
           git push
