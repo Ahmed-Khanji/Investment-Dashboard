@@ -1,4 +1,4 @@
-# Reads CSV and inserts new entries into Investment model
+# Reads CSV and inserts or updates entries into Investment model
 
 import sys
 import os
@@ -15,7 +15,7 @@ django.setup()
 from api.models import Investment
 
 # === Sync CSV to DB ===
-def sync_db(csv_file='backend/automation/daily_balances.csv'):
+def sync_db(csv_file='automation/daily_balances.csv'):
     with open(csv_file, mode='r') as file:
         reader = csv.reader(file)
         for row in reader:
@@ -26,11 +26,16 @@ def sync_db(csv_file='backend/automation/daily_balances.csv'):
                 date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
                 value = float(value_str)
 
-                if not Investment.objects.filter(date=date_obj).exists():
-                    Investment.objects.create(date=date_obj, balance=value)
+                obj, created = Investment.objects.update_or_create(
+                    date=date_obj,
+                    defaults={'balance': value}
+                )
+
+                if created:
                     print(f"Added: {date_str} → {value}")
                 else:
-                    print(f"Skipped (already in DB): {date_str}")
+                    print(f"Updated: {date_str} → {value}")
+
             except Exception as e:
                 print(f"Failed to parse row {row}: {e}")
 
