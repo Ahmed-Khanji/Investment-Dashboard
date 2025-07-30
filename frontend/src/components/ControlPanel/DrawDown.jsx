@@ -31,32 +31,47 @@ export default function DrawDown({statArray}) {
         });
         return count > 0 ? (sumDrawdown / count).toFixed(2) + "%" : 0;
     }
-
     
     // in days
     function computeAvgDur() {
-        let peak = -Infinity; let peakDate = null; 
-        let inDrawdown = false; const durations = [];
+        let peak = -Infinity;
+        let peakDate = null;
+        let inDrawdown = false;
+        const durations = [];
 
-        statArray.forEach(({ balance, date }) => {
-            // thats the end of drawduration, where we compute duration
-            if (balance > peak) {
-                if (inDrawdown && peakDate) {
-                    const diffDays = (date - peakDate) / (1000 * 60 * 60 * 24);
-                    if (diffDays > 0) durations.push(diffDays);
-                    inDrawdown = false;
+        statArray.forEach(({balance, date}, i) => {
+            const currDate = new Date(date);
+            if (balance > peak) { // drawdown finished
+                if (peakDate && inDrawdown) {
+                    const diffDays = (currDate - peakDate) / (1000 * 60 * 60 * 24);
+                    durations.push(diffDays);
                 }
                 peak = balance;
-                peakDate = date;
+                peakDate = currDate;
+                inDrawdown = false;
             }
-            else if (balance < peak && !inDrawdown) {
-                inDrawdown = true; // if balance < peak, were in drawdown 
+            else if (balance < peak) {
+                if (!inDrawdown) {
+                    inDrawdown = true;
+                    peakDate = currDate;
+                }
+                return;
             }
         });
 
+        if (inDrawdown && peakDate) {
+            const lastDate = new Date(statArray[statArray.length - 1].date);
+            const diffDays = (lastDate - peakDate) / (1000 * 60 * 60 * 24);
+            if (diffDays > 0) {
+                durations.push(diffDays);
+            }
+        }
+
         const sum = durations.reduce((a, b) => a + b, 0);
-        return durations.length ? (sum / durations.length).toFixed(1) : 0;
+        return durations.length ? Math.round(sum / durations.length) + " days" : "0";
     }
+
+
 
 
     useEffect(() => {

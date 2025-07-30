@@ -4,9 +4,9 @@ import '../styles/StrategyChart.css';
 
 export default function StrategyChart() {
     const mockData = [
-        {date: '06/29/2015', balance: 100}, // time in MM/DD/YYYY, balance in usd $
-        {date: '07/12/2016', balance: 50},
-        {date: '08/22/2016', balance: 150},
+        {date: '2024-06-29', balance: 100}, // time in YYYY-MM-DD, balance in usd $
+        {date: '2024-07-12', balance: 50},
+        {date: '2024-08-22', balance: 150},
     ]
     // State for raw stat and chart ready arrays
     const [statArray, setStatArray] = useState(mockData);

@@ -8,9 +8,9 @@ import DrawDown from './DrawDown';
 export default function ControlPanel() {
     // fetch statArray
     const mockData = [
-        {date: '2015-06-29', balance: 100}, // time in YYYY-MM-DD, balance in usd $
-        {date: '2016-07-12', balance: 50},
-        {date: '2016-08-22', balance: 150},
+        {date: '2024-06-29', balance: 100}, // time in YYYY-MM-DD, balance in usd $
+        {date: '2024-07-12', balance: 50},
+        {date: '2024-08-22', balance: 150},
     ]
     const [statArray, setStatArray] = useState(mockData);
     useEffect(() => {
