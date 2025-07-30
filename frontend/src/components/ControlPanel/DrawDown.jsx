@@ -55,7 +55,7 @@ export default function DrawDown({statArray}) {
         });
 
         const sum = durations.reduce((a, b) => a + b, 0);
-        return durations.length ? (sum / durations.length).toFixed(2) : 0;
+        return durations.length ? (sum / durations.length).toFixed(1) : 0;
     }
 
 
