@@ -4,6 +4,7 @@ import MonthlyReturns from './MonthlyReturns';
 import SharpRatio from './SharpRatio';
 import SortinoRatio from './SortinoRatio';
 import DrawDown from './DrawDown';
+import PieCrypto from './PieCrypto';
 
 export default function ControlPanel() {
     // fetch statArray
@@ -61,12 +62,9 @@ export default function ControlPanel() {
                         <div className='top-right'>
                             <DrawDown statArray={statArray} />
                         </div>
-
-                        <div></div>
                         <div className='center-metric'>
-                            <p>Center Metric (Pie Chart)</p>
+                            <PieCrypto />
                         </div>
-                        <div></div>
                     </div>
 
                     <div className='bottom-grid'>
@@ -76,7 +74,9 @@ export default function ControlPanel() {
                             />
                         </div>
                         <div className='bottom-right'>
-                            <p>Sortino Ratio</p>
+                            <SortinoRatio 
+                                statArray={statArray}
+                            />
                         </div>
                     </div>
                 </div>

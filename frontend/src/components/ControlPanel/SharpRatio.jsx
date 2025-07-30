@@ -52,7 +52,7 @@ export default function SharpRatio({statArray}) {
                             <Line 
                                 type="monotone" 
                                 dataKey="sharp" 
-                                stroke={strokeColor} 
+                                stroke="#ff4d4d" 
                                 dot={false}
                             />
                             <XAxis dataKey='date' />
