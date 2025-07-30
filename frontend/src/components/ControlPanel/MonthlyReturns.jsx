@@ -30,12 +30,12 @@ export default function MonthlyReturns({ statArray, firstOfMonthBalances}) {
     <div className="chart-container">
       <h2>Monthly Cumulative Returns</h2>
       <div className="mthly-chart">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer>
           <AreaChart data={mthlyReturns}>
             <defs>
               <linearGradient id="colorReturn" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#00ff7f" stopOpacity={0.8} />
-                <stop offset="100%" stopColor="#00ff7f" stopOpacity={0} />
+                <stop offset="0%" stopColor="#00C853" stopOpacity={0.8} />
+                <stop offset="100%" stopColor="#00C853" stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#444" />
@@ -53,7 +53,7 @@ export default function MonthlyReturns({ statArray, firstOfMonthBalances}) {
             <Area
               type="linear"
               dataKey="return"
-              stroke="#00ff7f"
+              stroke="#00C853"
               fill="url(#colorReturn)"
             />
           </AreaChart>

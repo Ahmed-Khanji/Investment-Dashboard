@@ -35,7 +35,6 @@ export default function SharpRatio({statArray}) {
 
     useEffect(() => {
         const result = computeSharpRatio();
-        console.log("Sharpe Data:", result); // test
         setSharpRatio(result);
     }, [statArray]);
 
@@ -48,17 +47,21 @@ export default function SharpRatio({statArray}) {
             <div className='chart-container'>
                 <h2>Daily Sharpe Ratios</h2>
                 <div className="sharp-chart">
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer>
                         <LineChart data={sharpRatio}>
-                            <CartesianGrid strokeDasharray="3 3" />
                             <Line 
                                 type="monotone" 
                                 dataKey="sharp" 
                                 stroke={strokeColor} 
-                                dot={{ r: 3, stroke: strokeColor, fill: '#F5F5F5', opacity: 0.4 }}
+                                dot={false}
                             />
                             <XAxis dataKey='date' />
                             <YAxis domain={['auto', 'auto']} />
+                            <Tooltip
+                                formatter={(value) => `${value.toFixed(2)}`}
+                                labelStyle={{ color: '#fff' }}
+                                contentStyle={{ backgroundColor: '#222', borderColor: '#444' }}
+                            />
                         </LineChart>
                     </ResponsiveContainer>
                 </div> 

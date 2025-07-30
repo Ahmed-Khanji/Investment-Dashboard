@@ -43,7 +43,6 @@ export default function ControlPanel() {
                 });
             }
         });
-
         setFirstOfMonthBalances(firsts);
     }, [statArray]);
 
@@ -60,9 +59,7 @@ export default function ControlPanel() {
                             />
                         </div>     
                         <div className='top-right'>
-                            <p><b>Draw Down Metrics</b></p>
-                            <p>Average DrawDown</p>
-                            <p>Average DrawDown Duration</p>
+                            <DrawDown statArray={statArray} />
                         </div>
 
                         <div></div>

@@ -68,7 +68,7 @@ export default function StrategyChart() {
                                 type="monotone" dataKey="balance" 
                                 stroke={chartData[chartData.length - 1]?.balance >= 0 ? 'green' : 'red'} 
                             />
-                            <CartesianGrid strokeDasharray="3 3" />
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#444" />
                             <XAxis dataKey="date" />
                             <YAxis domain={['auto', 'auto']} tickFormatter={(tick) => `$${tick}`} />
                             <Tooltip
