@@ -213,3 +213,5 @@
 [2026-02-11 12:48:22.915356] Error: No balance returned
 [2026-02-12 12:44:02.149848] Adding balance for 2026-02-12
 [2026-02-12 12:44:06.255470] Error: No balance returned
+[2026-02-13 12:38:50.746404] Adding balance for 2026-02-13
+[2026-02-13 12:38:54.944555] Error: No balance returned
