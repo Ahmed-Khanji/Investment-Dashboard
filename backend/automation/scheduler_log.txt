@@ -425,3 +425,5 @@
 [2026-05-30 13:05:55.967694] Error: No balance returned
 [2026-05-31 13:18:04.130826] Adding balance for 2026-05-31
 [2026-05-31 13:18:08.223595] Error: No balance returned
+[2026-06-01 17:19:47.997544] Adding balance for 2026-06-01
+[2026-06-01 17:19:52.089813] Error: No balance returned
